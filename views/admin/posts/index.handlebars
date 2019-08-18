@@ -1,0 +1,41 @@
+<h1>ALL POSTS</h1>
+
+
+<table class="table table-bordered">
+
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Allow Comments</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#each posts}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{title}}</td>
+            <td>{{status}}</td>
+            <td>{{allowComments}}</td>
+            <td>
+                <a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a>
+                <form action="/admin/posts" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" value="{{ id }}">
+                    <button type="submit" class="btn btn-danger">DELETE</button>
+                </form>
+
+            </td>
+        </tr>
+
+
+        {{/each}}
+    </tbody>
+
+
+
+</table>
+

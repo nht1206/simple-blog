@@ -1,0 +1,65 @@
+<h1>Edit Post</h1>
+
+<form action="/admin/posts" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="_method" value="PUT">
+    <input type="hidden" name="id" value="{{ post.id }}">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input name="title" type="text" class="form-control" id="title" value="{{post.title}}">
+    </div>
+
+    <div class="form-group">
+        <label for="file">File Upload</label>
+        <input type="file" name="file" class="form-control" >
+    </div>
+
+
+
+    <div class="form-group">
+        <label for="status">Category</label>
+        <select name="category" id="status" class="form-control">
+
+
+            {{#selects post.category}}
+
+                 {{#each categories}}
+
+                <option value="{{id}}">{{name}}</option>
+
+                {{/each}}
+
+            {{/selects}}
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status</label>
+        <select name="status" id="status" class="form-control">
+        {{#selects post.status}}
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="draft">Draft</option>
+        {{/selects}}
+        </select>
+    </div>
+
+
+
+    <div class="form-check">
+        <label for="allowComments" class="form-check-label">
+            <input name="allowComments" type="checkbox" {{#if post.allowComments}} checked="checked" {{/if}} class="form-check-input" id="allowComments">
+            Allow Comments
+        </label>
+    </div>
+
+    <div class="form-group">
+        <label for="body">Body</label>
+        <textarea name="body" cols="30" rows="10" class="form-control" id="body">{{post.body}}</textarea>
+    </div>
+
+
+    <button id="update" type="submit" class="btn btn-primary">Update Post</button>
+
+
+</form>
