@@ -25,6 +25,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/posts', (req, res) => {
+    console.log(req.flash());
     Post.find({}).then((posts) => {
         res.render('admin/posts', {posts: posts});
     });
@@ -48,6 +49,7 @@ router.get('/categories', (req, res) => {
 });
 
 router.get('/posts/edit/:id', (req, res) => {
+
     Post.findOne({_id: req.params.id}).then((post) => {
         res.render('admin/posts/edit', {post: post});
     });
@@ -75,10 +77,12 @@ router.post('/posts', (req, res) => {
     newPost.title = req.body.title;
     newPost.status = req.body.status;
     newPost.allowComments = allowComments;
-    // newPost.body = req.body.body;
+    newPost.body = req.body.body;
 
     newPost.save().then((post) => {
         res.redirect('/admin/posts');
+    }).catch((err) => {
+        res.render('admin/posts/create', { errors: err.errors});
     });
 
 });
@@ -104,6 +108,9 @@ router.put('/posts', (req, res) => {
         post.status = req.body.status;
         post.body = req.body.body;
         post.save().then((updatedPost) => {
+            res.redirect('/admin/posts');
+        }).catch((err) => {
+            req.flash('errors', 'sadasdasd');
             res.redirect('/admin/posts');
         });
     });

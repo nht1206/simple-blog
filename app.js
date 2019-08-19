@@ -6,6 +6,8 @@ var hbs = require('express-handlebars');
 var mongoose = require('mongoose');
 var methodOverride = require('method-override');
 var uploadFile = require('express-fileupload');
+var flash = require('connect-flash');
+var session = require('express-session');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -14,6 +16,15 @@ var adminRouter = require('./routes/admin');
 const { select } = require('./helpers');
 
 var app = express();
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'rhys---x',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+}));
+app.use(flash());
 
 
 
@@ -32,8 +43,8 @@ app.set('view engine', 'handlebars');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 
 
