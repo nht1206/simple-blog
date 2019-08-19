@@ -9,6 +9,7 @@
             <th>Title</th>
             <th>Image</th>
             <th>Status</th>
+            <th>Date</th>
             <th>Allow Comments</th>
             <th>Action</th>
         </tr>
@@ -21,6 +22,7 @@
             <td>{{title}}</td>
             <td><img height="50" class="img-responsive" src="/uploads/{{image}}"></td>
             <td>{{status}}</td>
+            <td>{{ConvertTime date 'MMMM Do YYYY'}}</td>
             <td>{{allowComments}}</td>
             <td>
                 <a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a>

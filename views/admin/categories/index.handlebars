@@ -2,7 +2,7 @@
 
     <div class="col-sm-4">
         <h1>Create Category</h1>
-        <form action="/admin/categories/create" method="post">
+        <form action="/admin/categories" method="post">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" name="name" placeholder="Enter title" class="form-control">
@@ -32,7 +32,8 @@
             <tr>
                 <th>id</th>
                 <th>Name</th>
-
+                <th>Date</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -42,20 +43,16 @@
                 <tr>
                     <td>{{id}}</td>
                     <td>{{name}}</td>
-                    <td><a href="/admin/categories/edit/{{id}}" class="btn btn-info">Edit</a></td>
-
                     <td>
-
-                        <form action="/admin/categories/{{id}}?_method=DELETE" method="post">
-
+                        <a>{{ConvertTime date 'MMMM Do YYYY'}}</a>
+                    </td>
+                    <td>
+                        <a href="/admin/categories/edit/{{id}}" class="btn btn-info">Edit</a>
+                        <form action="/admin/categories" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="id" value="{{id}}">
                             <button class="btn btn-danger">Delete</button>
-
-
-
                         </form>
-
-
-
                     </td>
 
                 </tr>

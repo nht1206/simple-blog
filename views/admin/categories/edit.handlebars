@@ -3,7 +3,9 @@
 <div class="row">
 <div class="col-sm-4">
 
-    <form action="/admin/categories/edit/{{category.id}}?_method=PUT" method="post">
+    <form action="/admin/categories" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="hidden" name="id" value="{{category.id}}">
         <div class="form-group">
             <label for="name">Name</label>
             <input value="{{category.name}}" type="text" name="name" placeholder="Enter title" class="form-control">

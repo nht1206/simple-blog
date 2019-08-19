@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = {
     select: function(value, options) {
         return options.fn(this)
@@ -8,10 +9,7 @@ module.exports = {
             })
             .join('\n')
     },
-    isEmpty: function (obj) {
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key))
-                return false;
-        }
+    ConvertTime: function (date, format) {
+        return moment(date).format(format);
     }
 };

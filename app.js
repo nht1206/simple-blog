@@ -10,11 +10,13 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var flash = require('connect-flash');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/home');
+var usersRouter = require('./routes/home/users');
 var adminRouter = require('./routes/admin');
+var postRouter = require('./routes/admin/post');
+var categoryRouter = require('./routes/admin/category');
 
-const { select } = require('./helpers');
+const { select, ConvertTime } = require('./helpers');
 
 var app = express();
 
@@ -31,7 +33,7 @@ mongoose.connect(require('./configs/database'), { useNewUrlParser: true }).then(
 
 
 //register a handlebars
-app.engine('handlebars', hbs({ defaultLayout: 'home', helpers: {selects: select}}));
+app.engine('handlebars', hbs({ defaultLayout: 'home', helpers: {selects: select, ConvertTime: ConvertTime}}));
 app.set('view engine', 'handlebars');
 
 app.use(logger('dev'));
@@ -75,5 +77,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
+app.use('/admin/posts', postRouter);
+app.use('/admin/categories', categoryRouter);
 
 module.exports = app;

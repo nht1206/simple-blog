@@ -1,6 +1,6 @@
 var express = require('express');
-var router = express.Router()
-var Post = require('../models/Post');
+var router = express.Router();
+var Post = require('../../models/Post');
 var faker = require('faker');
 
 
@@ -10,42 +10,24 @@ router.get('/*', (req, res, next) => {
     next();
 });
 
-/* GET admin listing. */
-router.get('/', function(req, res, next) {
-    res.render('admin');
-});
-
-router.get('/posts', (req, res) => {
+router.get('/', (req, res) => {
     Post.find({}).then((posts) => {
         res.render('admin/posts', { posts: posts });
     });
 });
 
-router.get('/my-posts', (req, res) => {
-    res.render('admin/posts/my-posts');
-});
-
-router.get('/posts/create', (req, res) => {
+router.get('/create', (req, res) => {
     res.render('admin/posts/create');
 });
 
-
-router.get('/comments', (req, res) => {
-    res.render('admin/comments');
-});
-
-router.get('/categories', (req, res) => {
-    res.render('admin/categories');
-});
-
-router.get('/posts/edit/:id', (req, res) => {
+router.get('/edit/:id', (req, res) => {
     Post.findOne({_id: req.params.id}).then((post) => {
         res.render('admin/posts/edit', { post: post });
     });
 });
 
 
-/* POST admin page listing */
+/* POST post page listing */
 
 router.post('/generate-fake-posts',(req, res) => {
     for (let i = 0; i < req.body.amount; i++) {
@@ -57,11 +39,11 @@ router.post('/generate-fake-posts',(req, res) => {
         newPost.body = faker.lorem.sentence();
         newPost.save();
     }
-    req.flash('success_message', 'Fake posts were created');
+    req.flash('success_message', `${req.body.amount} fake posts were created`);
     res.redirect('/admin/posts');
 });
 
-router.post('/posts', (req, res) => {
+router.post('/', (req, res) => {
     var fileName = 'default.jpg';
     var allowComments;
     if (req.files) {
@@ -92,9 +74,9 @@ router.post('/posts', (req, res) => {
 
 });
 
-/* PUT admin listing*/
+/* PUT post listing*/
 
-router.put('/posts', (req, res) => {
+router.put('/', (req, res) => {
     Post.findOne({_id: req.body.id}).then((post) => {
         var fileName = 'default.jpg';
         if (req.files) {
@@ -123,9 +105,9 @@ router.put('/posts', (req, res) => {
 });
 
 
-/*DELETE admin listing*/
+/*DELETE post listing*/
 
-router.delete('/posts', (req, res) => {
+router.delete('/', (req, res) => {
     Post.deleteOne({_id: req.body.id}).then(() => {
         req.flash('success_mesage', `Post ${req.body.id} was deleted`);
         res.redirect('/admin/posts');
@@ -134,7 +116,5 @@ router.delete('/posts', (req, res) => {
         res.redirect('/admin/posts');
     });
 });
-
-
 
 module.exports = router;
