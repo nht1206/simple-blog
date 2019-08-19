@@ -1,18 +1,4 @@
 <h1>Edit Post</h1>
-
-{{#each errors}}
-
-    <div class="alert alert-danger">
-
-        {{message}}
-
-    </div>
-
-
-
-{{/each}}
-
-
 <form action="/admin/posts" method="post" enctype="multipart/form-data">
     <input type="hidden" name="_method" value="PUT">
     <input type="hidden" name="id" value="{{ post.id }}">

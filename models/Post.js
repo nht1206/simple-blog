@@ -22,6 +22,10 @@ var Post = new Schelma({
     body: {
         type: String,
         require: true
+    },
+    date: {
+        type: Date,
+        default: Date.now()
     }
 });
 

@@ -8,6 +8,7 @@ var methodOverride = require('method-override');
 var uploadFile = require('express-fileupload');
 var flash = require('connect-flash');
 var session = require('express-session');
+var flash = require('connect-flash');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,14 +18,7 @@ const { select } = require('./helpers');
 
 var app = express();
 
-app.use(cookieParser());
-app.use(session({
-    secret: 'rhys---x',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}));
-app.use(flash());
+
 
 
 
@@ -62,6 +56,21 @@ app.use(methodOverride((req, res) => {
         return method;
     }
 }));
+
+app.use(cookieParser());
+app.use(session({
+    secret: 'rhys---x',
+    resave: false,
+    saveUninitialized: true,
+}));
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.errors = req.flash('errors');
+    res.locals.success_message = req.flash('success_message');
+    res.locals.error_message = req.flash('success_message');
+    next();
+});
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
