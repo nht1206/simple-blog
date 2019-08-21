@@ -17,11 +17,11 @@
             <div class="card-body">
                 <h2 class="card-title">{{title}}</h2>
                 <p class="card-text">{{body}}</p>
-                <a href="/post/{{id}}" class="btn btn-primary">Read More &rarr;</a>
+                <a href="/post/{{slug}}" class="btn btn-primary">Read More &rarr;</a>
             </div>
             <div class="card-footer text-muted">
                 <a>Post on {{ConvertTime Date 'MMMM Do YYYY'}} By </a>
-                <a href="/">My blog</a>
+                <a href="/profile/{{user.id}}">{{user.firstName}}</a>
             </div>
         </div>
 

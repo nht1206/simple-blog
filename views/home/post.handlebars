@@ -13,7 +13,7 @@
         <hr>
         <!-- Date/Time -->
             <a>Post on {{ConvertTime Date 'MMMM Do YYYY'}} By </a>
-            <a href="/">My blog</a>
+            <a href="/profile/{{post.user.id}}">{{post.user.firstName}}</a>
         <hr>
 
         <!-- Preview Image -->
@@ -36,11 +36,10 @@
         <div class="card my-4">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
-                <form action="/admin/comments" method="post">
+                <form action="/user/comments" method="post">
                     <div class="form-group">
-                        <textarea name="body" class="form-control" rows="3"></textarea>
-
-                        <input type="hidden" value="{{post.id}}" name="id">
+                        <textarea name="content" class="form-control" rows="3"></textarea>
+                        <input type="hidden" value="{{post.id}}" name="postId">
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
@@ -71,16 +70,18 @@
 
          {{#each post.comments}}
 
-        <!-- Single Comment -->
-        <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-                <h5 class="mt-0">{{user.firstName}}</h5>
+            {{#if status}}
+                <!-- Single Comment -->
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">{{user.firstName}} {{user.lastName}}</h5>
 
-                {{body}}
+                        {{content}}
 
-            </div>
-        </div>
+                    </div>
+                </div>
+            {{/if}}
 
         {{/each}}
 

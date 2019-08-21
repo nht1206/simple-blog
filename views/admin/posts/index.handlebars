@@ -7,6 +7,7 @@
         <tr>
             <th>Id</th>
             <th>Title</th>
+            <th>Category</th>
             <th>Image</th>
             <th>Status</th>
             <th>Date</th>
@@ -19,11 +20,16 @@
         {{#each posts}}
         <tr>
             <td>{{id}}</td>
-            <td>{{title}}</td>
+            <td>
+                <a href="/post/{{slug}}">{{title}}</a>
+            </td>
+            <td>{{category.name}}</td>
             <td><img height="50" class="img-responsive" src="/uploads/{{image}}"></td>
             <td>{{status}}</td>
             <td>{{ConvertTime date 'MMMM Do YYYY'}}</td>
-            <td>{{allowComments}}</td>
+            <td>
+                <input data-id="{{id}}" {{#if allowComments }}checked{{/if}} type="checkbox" name="allowCommentsUpdate" />
+            </td>
             <td>
                 <a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a>
                 <form action="/admin/posts" method="post">
@@ -34,8 +40,6 @@
 
             </td>
         </tr>
-
-
         {{/each}}
     </tbody>
 

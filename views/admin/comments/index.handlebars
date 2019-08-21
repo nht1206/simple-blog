@@ -6,6 +6,7 @@
     <tr>
         <th>id</th>
         <th>owner</th>
+        <th>post id</th>
         <th>Status</th>
         <th>Date</th>
     </tr>
@@ -17,21 +18,23 @@
         <tr>
             <th>{{id}}</th>
             <td>{{user.firstName}}</td>
-
+            <td>{{postId}}</td>
             <td>
 
-                <input data-id="{{id}}"  type="checkbox" name="approveComment" />
+                <input data-id="{{id}}" {{#if status }}checked{{/if}} type="checkbox" name="approveComment" />
 
             </td>
 
 
 
 
-            <td>{{generateDate date 'MMMM Do YYYY'}}</td>
+            <td>{{ConvertTime date 'MMMM Do YYYY'}}</td>
             <td>
 
-                <form action="/admin/comments/{{id}}?_method=DELETE" method="post">
-
+                <form action="/admin/comments" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="postId" value="{{postId}}">
+                    <input type="hidden" name="id" value="{{id}}">
                     <button type="submit" class="btn btn-danger">Delete</button>
 
                 </form>

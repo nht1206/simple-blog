@@ -1,28 +1,28 @@
 var express = require('express');
 var router = express.Router();
 var Post = require('../../models/Post');
+var Categories = require('../../models/Category');
 var faker = require('faker');
+var fs = require('fs');
 
-
-//reconfigure the default layout = admin
-router.get('/*', (req, res, next) => {
-    req.app.locals.layout = 'admin';
-    next();
-});
 
 router.get('/', (req, res) => {
-    Post.find({}).then((posts) => {
+    Post.find({}).populate('category').then((posts) => {
         res.render('admin/posts', { posts: posts });
     });
 });
 
 router.get('/create', (req, res) => {
-    res.render('admin/posts/create');
+    Categories.find({}).then((categories) => {
+        res.render('admin/posts/create', {categories: categories});
+    });
 });
 
 router.get('/edit/:id', (req, res) => {
     Post.findOne({_id: req.params.id}).then((post) => {
-        res.render('admin/posts/edit', { post: post });
+        Categories.find({}).then((categories) => {
+            res.render('admin/posts/edit', {categories: categories, post: post});
+        });
     });
 });
 
@@ -32,7 +32,9 @@ router.get('/edit/:id', (req, res) => {
 router.post('/generate-fake-posts',(req, res) => {
     for (let i = 0; i < req.body.amount; i++) {
         const newPost = new Post();
+        newPost.user = req.user.id;
         newPost.title = faker.name.title();
+        newPost.slug = faker.name.title();
         newPost.image = 'default.jpg';
         newPost.allowComments = faker.random.boolean();
         newPost.status = 'public';
@@ -54,6 +56,7 @@ router.post('/', (req, res) => {
         });
     }
     var newPost =  new Post();
+    newPost.user = req.user.id;
     if (req.body.allowComments)
         allowComments = true;
     else
@@ -63,13 +66,14 @@ router.post('/', (req, res) => {
     newPost.status = req.body.status;
     newPost.allowComments = allowComments;
     newPost.body = req.body.body;
+    newPost.category = req.body.category;
 
     newPost.save().then((post) => {
         req.flash('success_message', `Post ${ post.title } was created`);
         res.redirect('/admin/posts');
     }).catch((err) => {
-        req.flash('errors', err.errors);
-        res.render('admin/posts/create');
+        req.flash('errors', err);
+        res.redirect('/admin/posts/create');
     });
 
 });
@@ -78,7 +82,7 @@ router.post('/', (req, res) => {
 
 router.put('/', (req, res) => {
     Post.findOne({_id: req.body.id}).then((post) => {
-        var fileName = 'default.jpg';
+        var fileName = post.image;
         if (req.files) {
             const { file } = req.files;
             fileName = Date.now() + '-' + file.name;
@@ -94,12 +98,22 @@ router.put('/', (req, res) => {
         post.image = fileName;
         post.status = req.body.status;
         post.body = req.body.body;
+        post.category = req.body.category;
         post.save().then((updatedPost) => {
             req.flash('success_message', `Post ${updatedPost.id} was updated`);
             res.redirect('/admin/posts');
         }).catch((err) => {
-            req.flash('errors', err.errors);
+            req.flash('errors', err);
             res.redirect('/admin/posts/edit/' + post.id);
+        });
+    });
+});
+
+router.put('/allowComments', (req, res) => {
+    Post.findOne({_id: req.body.id}).then((post) => {
+        post.allowComments = req.body.allowCommentsUpdate;
+        post.save().then((post) => {
+            res.send(post.toJSON());
         });
     });
 });
@@ -108,12 +122,20 @@ router.put('/', (req, res) => {
 /*DELETE post listing*/
 
 router.delete('/', (req, res) => {
-    Post.deleteOne({_id: req.body.id}).then(() => {
-        req.flash('success_mesage', `Post ${req.body.id} was deleted`);
-        res.redirect('/admin/posts');
-    }).catch((err) => {
-        req.flash('errors', err.errors);
-        res.redirect('/admin/posts');
+    Post.findOne({_id: req.body.id}).populate('comments').then((post) => {
+        post.comments.forEach((comment) => {
+            comment.remove();
+        });
+        post.remove().then((post) => {
+            if (post.image !== 'default.jpg'){
+                fs.unlinkSync('./public/uploads/' + post.image);
+            }
+            req.flash('success_message', `Post ${req.body.id} was deleted`);
+            res.redirect('/admin/posts');
+        }).catch((err) => {
+            req.flash('errors', err.errors);
+            res.redirect('/admin/posts');
+        });
     });
 });
 

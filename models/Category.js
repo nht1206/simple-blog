@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
-var Schelma = mongoose.Schema;
+var Schema = mongoose.Schema;
 
-var Category = new Schelma({
+var Category = new Schema({
     name: {
         type: String,
-        require: true,
-        minlength: 5
+        require: true
     },
     date: {
         type: Date,

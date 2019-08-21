@@ -4,7 +4,7 @@
     <input type="hidden" name="id" value="{{ post.id }}">
     <div class="form-group">
         <label for="title">Title</label>
-        <input name="title" type="text" class="form-control" id="title" value="{{post.title}}">
+        <input required name="title" type="text" class="form-control" id="title" value="{{post.title}}">
     </div>
 
     <div class="form-group">
@@ -47,14 +47,14 @@
 
     <div class="form-check">
         <label for="allowComments" class="form-check-label">
-            <input name="allowComments" type="checkbox" {{#if post.allowComments}} checked="checked" {{/if}} class="form-check-input" id="allowComments">
             Allow Comments
+            <input name="allowComments" type="checkbox" {{#if post.allowComments}} checked="checked" {{/if}} class="form-check-input" id="allowComments">
         </label>
     </div>
 
     <div class="form-group">
         <label for="body">Body</label>
-        <textarea name="body" cols="30" rows="10" class="form-control" id="body">{{post.body}}</textarea>
+        <textarea required name="body" cols="30" rows="10" class="form-control" id="body">{{post.body}}</textarea>
     </div>
 
 

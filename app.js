@@ -9,10 +9,12 @@ var uploadFile = require('express-fileupload');
 var flash = require('connect-flash');
 var session = require('express-session');
 var flash = require('connect-flash');
+var passport = require('passport');
 
 var indexRouter = require('./routes/home');
-var usersRouter = require('./routes/home/users');
+var userRouter = require('./routes/home/users');
 var adminRouter = require('./routes/admin');
+var commentsRouter = require('./routes/admin/comment');
 var postRouter = require('./routes/admin/post');
 var categoryRouter = require('./routes/admin/category');
 
@@ -25,6 +27,7 @@ var app = express();
 
 
 //connect to the database
+mongoose.set('useCreateIndex', true);
 mongoose.connect(require('./configs/database'), { useNewUrlParser: true }).then((db) => {
     console.log('Connected to database.');
 }).catch((err) => {
@@ -66,18 +69,22 @@ app.use(session({
     saveUninitialized: true,
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use((req, res, next) => {
+    res.locals.user = req.user || null;
     res.locals.errors = req.flash('errors');
     res.locals.success_message = req.flash('success_message');
-    res.locals.error_message = req.flash('success_message');
+    res.locals.error_message = req.flash('error_message');
     next();
 });
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/user', userRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/posts', postRouter);
 app.use('/admin/categories', categoryRouter);
+app.use('/admin/comments', commentsRouter);
 
 module.exports = app;

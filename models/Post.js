@@ -1,12 +1,21 @@
 var mongoose = require('mongoose');
-var Schelma = mongoose.Schema;
+var Schema = mongoose.Schema;
+var Slug = require('mongoose-url-slugs');
 
-var Post = new Schelma({
-    user: {},
+var Post = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    },
     title: {
         type: String,
         require: true,
+        default: '',
         minlength: 10
+    },
+    category: {
+        type: Schema.Types.ObjectId,
+        ref: 'categories'
     },
     image: {
         type:String,
@@ -26,7 +35,18 @@ var Post = new Schelma({
     date: {
         type: Date,
         default: Date.now()
-    }
-});
+    },
+    slug: {
+        type: String,
+        default: '',
+        trim: true
+    },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'comments'
+    }]
+}, {usePushEach: true});
+
+Post.plugin(Slug('title', {field: 'slug'}));
 
 module.exports = mongoose.model('posts', Post);

@@ -10,11 +10,11 @@
     <i class="fa fa-angle-up"></i>
 </a>
 <!-- Logout Modal-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logout" tabindex="-1" role="dialog" aria-labelledby="logoutLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <h5 class="modal-title" id="logoutlLabel">Ready to Leave?</h5>
                 <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -42,8 +42,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-
-
 
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
@@ -86,12 +84,16 @@
 </script>
 
 
-
-
-
 <script>
-
+    {{#if success_message}}
+        toastr.success('{{success_message}}');
+    {{/if}}
+    {{#if error_message}}
+        toastr.error('{{error_message}}');
+    {{/if}}
     $("[name='approveComment']").bootstrapSwitch();
+    $("[name='allowCommentsUpdate']").bootstrapSwitch();
+    $("[name='allowComments']").bootstrapSwitch();
 
 
     $(document).ready(()=>{
@@ -103,27 +105,34 @@
 
             $.ajax({
 
-                type: "POST",
-                url: '/admin/comments/approve-comment',
+                type: "PUT",
+                url: '/admin/comments',
                 data: {id: id, approveComment: data},
                 cache: false,
                 success: function(data){
-
-                       toastr.success(`Comment with id ${data._id} was updated`);
-
+                    toastr.success(`Comment with id ${data._id} was updated`);
                 }
-
 
             });
 
+        });
+        $("[name='allowCommentsUpdate']").on('switchChange.bootstrapSwitch', function(e, data){
 
+            const id = $(this).attr('data-id');
 
+            $.ajax({
 
+                type: "PUT",
+                url: '/admin/posts/allowComments',
+                data: {id: id, allowComments: data},
+                cache: false,
+                success: function(data){
+                    toastr.success(`Post with id ${data._id} was updated`);
+                }
+
+            });
 
         });
-
-
-
 
     });
 
