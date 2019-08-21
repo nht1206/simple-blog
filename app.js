@@ -24,11 +24,12 @@ var app = express();
 
 
 
+//get url connection for mongodb
 
+var { urlConnection } = require('./configs/database');
 
 //connect to the database
-mongoose.set('useCreateIndex', true);
-mongoose.connect(require('./configs/database'), { useNewUrlParser: true }).then((db) => {
+mongoose.connect(urlConnection, { useNewUrlParser: true, useCreateIndex: true }).then((db) => {
     console.log('Connected to database.');
 }).catch((err) => {
     console.log('could not connect to database.');
