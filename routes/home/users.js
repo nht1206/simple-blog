@@ -19,7 +19,7 @@ router.post('/comments', (req, res) => {
     post.comments.push(newComment);
     post.save().then((post) => {
       newComment.save().then((comment) => {
-        res.redirect('/post/' + post.id);
+        res.redirect('/post/' + post.slug);
       });
     }).catch((err) => {
       throw err;
