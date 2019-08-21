@@ -2,9 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Comment = require('../../models/Comment');
 var Post = require('../../models/Post');
-// var User = require('../../models/User');
 var { userAuthenticated } = require('../../helpers');
-// var { encryptPassword } = require('../../helpers');
 
 
 router.post('/*', userAuthenticated);
@@ -28,16 +26,5 @@ router.post('/comments', (req, res) => {
     });
   });
 });
-
-// router.get('/', (req, res) => {
-//   var adminUser = new User({
-//     email: 'nghuutho74@gmail.com',
-//     firstName: 'Rhys',
-//     lastName: 'Admin',
-//     password: encryptPassword('123456'),
-//     isAdmin: true
-//   });
-//   adminUser.save();
-// });
 
 module.exports = router;
