@@ -15,6 +15,24 @@ router.all('/*', (req, res, next) => {
 });
 
 /* GET home page. */
+router.get('/search', (req, res) => {
+  let keyword = req.query.keyword || '';
+  Post.find({})
+      .then((posts) => {
+        Categories.find({}).then((categories) => {
+          let list = [];
+          posts.forEach((post) => {
+            if (post.title.toLowerCase().search(keyword) !== -1 || post.body.toLowerCase().search(keyword) !== -1){
+              list.push(post);
+            }
+          });
+          res.render('home/search', {
+            posts: list,
+            categories: categories,
+          });
+        });
+      });
+});
 router.get('/', (req, res) => {
   let perPage = 10;
   let page = req.query.page || 1;
@@ -32,7 +50,7 @@ router.get('/', (req, res) => {
           pages: Math.ceil(postCount / perPage)
         });
       });
-    })
+    });
   });
 });
 

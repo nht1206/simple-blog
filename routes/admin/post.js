@@ -7,8 +7,20 @@ var fs = require('fs');
 
 
 router.get('/', (req, res) => {
-    Post.find({}).populate('category').then((posts) => {
-        res.render('admin/posts', { posts: posts });
+    let perPage = 10;
+    let page = req.query.page || 1;
+    Post.find({})
+        .skip(perPage*page - perPage)
+        .limit(perPage)
+        .populate('category')
+        .then((posts) => {
+        Post.count().then((postCount) => {
+            res.render('admin/posts', {
+                posts: posts,
+                current: parseInt(page),
+                pages: Math.ceil(postCount / perPage)
+            });
+        });
     });
 });
 

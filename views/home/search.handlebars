@@ -1,0 +1,65 @@
+<!-- Page Heading/Breadcrumbs -->
+<h1 class="mt-4 mb-3">Search
+</h1>
+
+<ol class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="index.html">Home</a>
+    </li>
+    <li class="breadcrumb-item active">Search</li>
+</ol>
+<div class="row">
+
+    <!-- Blog Entries Column -->
+    <div class="col-md-8">
+
+        {{#each posts}}
+
+            <!-- Blog Post -->
+            <div class="card mb-4">
+                <img class="card-img-top" src="/uploads/{{image}}" alt="Card image cap">
+                <div class="card-body">
+                    <h2 class="card-title">{{title}}</h2>
+                    <p class="card-text">{{body}}</p>
+                    <a href="/post/{{slug}}" class="btn btn-primary">Read More &rarr;</a>
+                </div>
+                <div class="card-footer text-muted">
+                    <a>Post on {{ConvertTime Date 'MMMM Do YYYY'}} By </a>
+                    <a href="/profile/{{user.id}}">{{user.firstName}}</a>
+                </div>
+            </div>
+        {{else}}
+            <div class="jumbotron">
+                <h1 class="display-1">404</h1>
+                <p>The post you're looking for could not be found. Here are some helpful links to get you back on track:</p>
+                <ul>
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+                        <a href="/#">Services</a>
+                    </li>
+                    <li>
+                        <a href="/#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.jumbotron -->
+        {{/each}}
+
+
+    </div>
+
+
+
+    <!-- Sidebar Widgets Column -->
+
+    {{> home/sidebar}}
+
+
+
+</div>
+<!-- /.row -->
