@@ -16,10 +16,23 @@ router.all('/*', (req, res, next) => {
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  Post.find({}).populate('user').then((posts) => {
-    Categories.find({}).then((categories) => {
-      res.render('home', {posts: posts, categories: categories});
-    });
+  let perPage = 10;
+  let page = req.query.page || 1;
+  Post.find({})
+      .skip(perPage*page - perPage)
+      .limit(perPage)
+      .populate('user')
+      .then((posts) => {
+    Post.count().then((postCount) => {
+      Categories.find({}).then((categories) => {
+        res.render('home', {
+          posts: posts,
+          categories: categories,
+          current: parseInt(page),
+          pages: Math.ceil(postCount / perPage)
+        });
+      });
+    })
   });
 });
 

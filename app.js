@@ -18,7 +18,7 @@ var commentsRouter = require('./routes/admin/comment');
 var postRouter = require('./routes/admin/post');
 var categoryRouter = require('./routes/admin/category');
 
-const { select, ConvertTime } = require('./helpers');
+const { select, ConvertTime, paginate } = require('./helpers');
 
 var app = express();
 
@@ -37,7 +37,11 @@ mongoose.connect(urlConnection, { useNewUrlParser: true, useCreateIndex: true })
 
 
 //register a handlebars
-app.engine('handlebars', hbs({ defaultLayout: 'home', helpers: {selects: select, ConvertTime: ConvertTime}}));
+app.engine('handlebars', hbs({ defaultLayout: 'home', helpers: {
+        selects: select,
+        ConvertTime: ConvertTime,
+        paginate: paginate
+}}));
 app.set('view engine', 'handlebars');
 
 app.use(logger('dev'));
