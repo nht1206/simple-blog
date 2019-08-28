@@ -18,6 +18,7 @@ router.all('/*', (req, res, next) => {
 router.get('/search', (req, res) => {
   let keyword = req.query.keyword || '';
   Post.find({})
+      .populate('user')
       .then((posts) => {
         Categories.find({}).then((categories) => {
           let list = [];

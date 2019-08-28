@@ -24,3 +24,10 @@
     <!-- /.container -->
 </footer>
 
+<script>
+    $(document).ready(()=>{
+        $('#btnSearch').click(() => {
+            window.location.href = '/search?keyword='+$("#keyword").val();
+        });
+    });
+</script>
