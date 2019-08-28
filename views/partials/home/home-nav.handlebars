@@ -6,24 +6,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-                {{#if user.isAdmin}}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/admin">Admin
-                            <span class="sr-only"></span>
-                        </a>
-                    </li>
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home
-                            <span class="sr-only">{{current}}</span>
-                        </a>
-                    </li>
-                {{else}}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-                {{/if}}
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about">About</a>
                 </li>
@@ -35,8 +22,13 @@
                     <a class="nav-link" href="#">Contact</a>
                 </li>
                 {{#if user}}
-                    <a class="nav-link"  href="/profile" ><i class="fa fa-user">{{user.firstName}}</i></a>
-                    <a class="nav-link" data-toggle="modal" data-target="#logout"><i class="fa fa-fw fa-sign-out">Logout</i></a>
+                    {{#if user.isAdmin}}
+                        <a class="nav-link"  href="/admin" ><i class="fa fa-user">{{user.firstName}}</i></a>
+                        <a class="nav-link" data-toggle="modal" data-target="#logout"><i class="fa fa-fw fa-sign-out">Logout</i></a>
+                    {{else}}
+                        <a class="nav-link"  href="/profile" ><i class="fa fa-user">{{user.firstName}}</i></a>
+                        <a class="nav-link" data-toggle="modal" data-target="#logout"><i class="fa fa-fw fa-sign-out">Logout</i></a>
+                    {{/if}}
                 {{else}}
                     <li class="nav-item">
                          <a class="nav-link" href="/login">Login</a>
@@ -45,7 +37,6 @@
                         <a class="nav-link" href="/register">Register</a>
                     </li>
                 {{/if}}
-
     </ul>
         </div>
     </div>
