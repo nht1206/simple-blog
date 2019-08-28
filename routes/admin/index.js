@@ -27,6 +27,24 @@ router.get('/',  async function(req, res, next) {
 
 });
 
+router.get('/myposts', (req, res) => {
+    let perPage = 10;
+    let page = req.query.page || 1;
+    Post.find({user: req.user.id})
+        .skip(perPage*page - perPage)
+        .limit(perPage)
+        .populate('category')
+        .then((posts) => {
+            Post.count().then((postCount) => {
+                res.render('admin/posts/my-posts', {
+                    posts: posts,
+                    current: parseInt(page),
+                    pages: Math.ceil(postCount / perPage)
+                });
+            });
+        });
+});
+
 
 
 /* POST admin page listing */

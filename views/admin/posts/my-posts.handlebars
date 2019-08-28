@@ -1,54 +1,56 @@
-<h1>ALL POSTS</h1>
+<h1>MY POSTS</h1>
 
 
 <table class="table table-bordered">
 
     <thead>
     <tr>
-
         <th>Id</th>
-        <th>File</th>
         <th>Title</th>
-        <th>Status</th>
         <th>Category</th>
-        <th>Allow Comments</th>
+        <th>Image</th>
+        <th>Status</th>
         <th>Date</th>
-
+        <th>Allow Comments</th>
+        <th>Action</th>
     </tr>
     </thead>
 
     <tbody>
-
     {{#each posts}}
-
         <tr>
-
             <td>{{id}}</td>
-            <td><img height="50" class="img-responsive" src="/uploads/{{file}}" alt=""></td>
-            <td>{{title}}</td>
-            <td>{{status}}</td>
-            <td>{{category.name}}</td>
-            <td>{{allowComments}}</td>
-            <td><a href="/post/{{id}}">View</a></td>
-            <td>{{generateDate date 'MMMM Do YYYY'}}</td>
-            <td><a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a></td>
             <td>
-
-                <form action="/admin/posts/{{id}}?_method=DELETE" method="post">
-
+                <a href="/post/{{slug}}">{{title}}</a>
+            </td>
+            <td>{{category.name}}</td>
+            <td><img height="50" class="img-responsive" src="/uploads/{{image}}"></td>
+            <td>{{status}}</td>
+            <td>{{ConvertTime date 'MMMM Do YYYY'}}</td>
+            <td>
+                <input data-id="{{id}}" {{#if allowComments }}checked{{/if}} type="checkbox" name="allowCommentsUpdate" />
+            </td>
+            <td>
+                <a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a>
+                <form action="/admin/posts" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" value="{{ id }}">
                     <button type="submit" class="btn btn-danger">DELETE</button>
                 </form>
 
-
-
             </td>
-
         </tr>
-
-
     {{/each}}
     </tbody>
+
+    <!-- Pagination -->
+    <ul class="pagination justify-content-center mb-4">
+
+        {{#paginate current=current pages=pages}}{{/paginate}}
+
+    </ul>
 
 
 
 </table>
+
